@@ -390,7 +390,8 @@ function showNewChatPage() {
     runningPromptChainSteps = undefined;
     runningPromptChainIndex = 0;
     document.title = 'New Page';
-    const planName = account?.accounts?.default?.entitlement?.subscription_plan || 'chatgptfreeplan';
+    // Removed subscription check - always show Plus UI
+    const planName = 'chatgptplusplan';
     if (!conversationsAreSynced) return;
     const focusedConversations = document.querySelectorAll('.selected');
     focusedConversations.forEach((c) => {

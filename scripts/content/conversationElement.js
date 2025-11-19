@@ -172,12 +172,8 @@ function conversationActions(conversationId) {
       button.click();
     });
   });
-  chrome.storage.local.get(['account'], (result) => {
-    const features = result.account?.accounts?.default?.features || [];
-    if (features.includes('shareable_links')) {
-      shareConversationButton.style.display = 'block';
-    }
-  });
+  // Removed feature restriction check - share button now available to all users
+  shareConversationButton.style.display = 'block';
   actionsWrapper.appendChild(editConversationNameButton);
   actionsWrapper.appendChild(shareConversationButton);
   actionsWrapper.appendChild(deleteConversationButton);

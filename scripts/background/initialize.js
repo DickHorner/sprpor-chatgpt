@@ -46,8 +46,7 @@ chrome.action.onClicked.addListener((tab) => {
 //-----------------------------------
 function registerUser(data) {
   chrome.storage.local.get(['account'], (r) => {
-    const { account } = r;
-    const isPaid = account?.accounts?.default?.entitlement?.has_active_subscription || false;
+    // Removed subscription check - treat all users equally
     const { user, accessToken } = data;
     const { version } = chrome.runtime.getManifest();
     const body = {
@@ -55,7 +54,7 @@ function registerUser(data) {
       email: user.email,
       avatar: user.image,
       name: user.name,
-      plus: isPaid,
+      plus: true, // Always set to true - no subscription restrictions
       version,
     };
     chrome.storage.sync.set({

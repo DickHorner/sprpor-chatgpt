@@ -16,11 +16,12 @@ function clearAllTimeouts() {
   //   id -= 1;
   // }
 }
-async function autoSaveCountDownAsync(isPaid) {
+async function autoSaveCountDownAsync() {
+  // Removed subscription check - use consistent timing for all users
   await new Promise((resolve) => {
     autoSaveTimeoutId = setTimeout(() => {
       resolve();
-    }, isPaid ? 2000 : 2000);
+    }, 2000);
   });
 }
 async function addConversationToStorage(conv) {
@@ -302,9 +303,9 @@ function initializeAutoSave(skipInputFormReload = false, forceRefreshIds = []) {
     if (remoteConversations.length > 500) {
       toast('Looks like you have over 500 conversation in your history. For best performance, please consider deleting some conversations to keep your history under 200 conversations!', 'warning', 10000);
     }
-    chrome.storage.local.get(['conversationsOrder', 'conversations', 'account', 'settings'], (result) => {
-      const { account, settings, conversationsOrder } = result;
-      const isPaid = account?.accounts?.default?.entitlement?.has_active_subscription || false;
+    chrome.storage.local.get(['conversationsOrder', 'conversations', 'settings'], (result) => {
+      const { settings, conversationsOrder } = result;
+      // Removed subscription check
       if (result.conversations && Object.keys(result.conversations).length > 0) {
         localConversations = result.conversations;
       }
@@ -442,7 +443,7 @@ function initializeAutoSave(skipInputFormReload = false, forceRefreshIds = []) {
                 addSyncBanner();
               }
               if (remoteConvIds.length - inSyncConversations(localConversations, remoteConversations).length > 3) {
-                await autoSaveCountDownAsync(isPaid);
+                await autoSaveCountDownAsync();
               }
             }
           }

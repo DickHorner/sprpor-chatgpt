@@ -211,11 +211,9 @@ function getModels() {
             settings: { ...settings, selectedModel: settings.selectedModel || data.models?.[0] },
           });
           if (data.models.map((m) => m.slug).find((m) => m.includes('plugins'))) {
-            const isPaid = account?.accounts?.default?.entitlement?.has_active_subscription || false;
-            if (isPaid) {
-              getAllPlugins();
-              getInstalledPlugins();
-            }
+            // Removed subscription check - plugins are now available to all users
+            getAllPlugins();
+            getInstalledPlugins();
           }
         });
       }
