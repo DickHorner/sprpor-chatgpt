@@ -533,21 +533,18 @@ function submitChat(userInput, conversation, messageId, parentId, settings, mode
                 // don't generate title if tmpChatStreamIsClosed
                 updateOrCreateConversation(finalConversationId, finalMessage, messageId, settings, !tmpChatStreamIsClosed, tmpChatStreamIsClosed).then(() => {
                   if (!tmpChatStreamIsClosed) { // if not clicked on stop generating button
-                    chrome.storage.local.get(['account'], (result) => {
-                      const { account } = result;
-                      const isPaid = account?.accounts?.default?.entitlement?.has_active_subscription || false;
-                      if (runningPromptChainSteps && runningPromptChainSteps.length > 1 && runningPromptChainIndex < runningPromptChainSteps.length - 1) {
-                        setTimeout(() => {
-                          insertNextChain(runningPromptChainSteps, runningPromptChainIndex + 1);
-                        }, isPaid ? 700 : 2000);
-                      } else {
-                        runningPromptChainSteps = undefined;
-                        runningPromptChainIndex = 0;
-                        setTimeout(() => {
-                          insertNextChunk(settings, finalMessage);
-                        }, isPaid ? 700 : 2000);
-                      }
-                    });
+                    // Removed subscription check - use faster timing for all users
+                    if (runningPromptChainSteps && runningPromptChainSteps.length > 1 && runningPromptChainIndex < runningPromptChainSteps.length - 1) {
+                      setTimeout(() => {
+                        insertNextChain(runningPromptChainSteps, runningPromptChainIndex + 1);
+                      }, 700);
+                    } else {
+                      runningPromptChainSteps = undefined;
+                      runningPromptChainIndex = 0;
+                      setTimeout(() => {
+                        insertNextChunk(settings, finalMessage);
+                      }, 700);
+                    }
                   } else {
                     runningPromptChainSteps = undefined;
                     runningPromptChainIndex = 0;
