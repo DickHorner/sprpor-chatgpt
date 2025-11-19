@@ -11,13 +11,17 @@ Write-Host "Packaging extension from: $rootPath"
 
 $zipPath = Join-Path $rootPath "sprpor-chatgpt-extension.zip"
 
-# Collect files while excluding common VCS and build artifacts
+# Exclude folders
+$excludeFolders = @('.git', '.github', 'node_modules', 'build')
+
+Write-Host "Collecting files (excluding: $($excludeFolders -join ', '))"
 $files = Get-ChildItem -Path $rootPath -Recurse -File | Where-Object {
-    $_.FullName -notmatch '\\.git\\' -and
-    $_.FullName -notmatch '\\.github\\' -and
-    $_.FullName -notmatch '\\node_modules\\' -and
-    $_.FullName -notmatch '\\build\\' -and
-    $_.Name -notlike '*.zip'
+    $full = $_.FullName
+    foreach ($e in $excludeFolders) {
+        if ($full -like "*\$e\*") { return $false }
+    }
+    if ($_.Name -like '*.zip') { return $false }
+    return $true
 }
 
 if (-not $files) {
@@ -25,16 +29,30 @@ if (-not $files) {
     exit 1
 }
 
-$paths = $files | ForEach-Object { $_.FullName }
+# Create a temporary copy preserving relative paths so the zip has correct entries
+$tmp = Join-Path $env:TEMP ([GUID]::NewGuid().ToString())
+New-Item -ItemType Directory -Path $tmp | Out-Null
+
+foreach ($f in $files) {
+    $rel = $f.FullName.Substring($rootPath.Length).TrimStart('\')
+    $dest = Join-Path $tmp $rel
+    $destDir = Split-Path $dest -Parent
+    if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+    Copy-Item -Path $f.FullName -Destination $dest -Force
+}
 
 Write-Host "Creating zip at: $zipPath"
-
 try {
-    Compress-Archive -LiteralPath $paths -DestinationPath $zipPath -Force
+    Push-Location $tmp
+    Compress-Archive -Path * -DestinationPath $zipPath -Force
+    Pop-Location
     Write-Host "Package created: $zipPath"
 } catch {
     Write-Error "Packaging failed: $_"
+    Remove-Item -Recurse -Force $tmp
     exit 2
 }
+
+Remove-Item -Recurse -Force $tmp
 
 Write-Host "Done. Verify the zip contains `manifest.json` and all expected assets.`n"
