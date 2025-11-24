@@ -1,3 +1,4 @@
+console.log('[Superpower ChatGPT] loadScript.js starting injection');
 function injectScript(scriptUrl) {
   const newScriptElement = document.createElement('script');
   newScriptElement.setAttribute('src', scriptUrl);
@@ -11,4 +12,6 @@ function injectScript(scriptUrl) {
 }
 
 const interceptorScriptUrl = chrome.runtime.getURL('scripts/interceptor/interceptor.js');
+console.log('[Superpower ChatGPT] injecting interceptor', interceptorScriptUrl);
 injectScript(interceptorScriptUrl);
+console.log('[Superpower ChatGPT] loadScript.js finished');

@@ -46,6 +46,7 @@
     },
     {
       "js": [
+        "scripts/content/debugInject.js",
         "scripts/thirdParty/FileSaver.js",
         "scripts/thirdParty/jszip.js",
         "scripts/thirdParty/katex.js",
