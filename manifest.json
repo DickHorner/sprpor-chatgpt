@@ -30,7 +30,8 @@
     }
   },
   "host_permissions": [
-    "https://chat.openai.com/*"
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*"
   ],
   "content_scripts": [
     {
@@ -38,7 +39,8 @@
         "scripts/interceptor/loadScript.js"
       ],
       "matches": [
-        "https://chat.openai.com/*"
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*"
       ],
       "run_at": "document_start"
     },
@@ -108,7 +110,8 @@
         "scripts/styles/katex.css"
       ],
       "matches": [
-        "https://chat.openai.com/*"
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*"
       ],
       "run_at": "document_end"
     }
@@ -119,7 +122,8 @@
   "web_accessible_resources": [
     {
       "matches": [
-        "https://chat.openai.com/*"
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*"
       ],
       "resources": [
         "icons/*",
