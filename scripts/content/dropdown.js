@@ -15,7 +15,7 @@ function dropdown(title, options, selectedOption, side = 'right', forceDark = fa
     </svg>
   </span>
 </button>
-<ul id="${title.toLowerCase()}-list-dropdown" style="max-height:400px;overflow-y:scroll;width:250px;" class="hidden transition-all absolute z-10 ${side === 'right' ? 'right-0' : 'left-0'} mt-1 overflow-auto rounded-md py-1 text-base ring-1 ring-opacity-5 focus:outline-none ${forceDark ? 'bg-gray-800 ring-white/20 last:border-0' : 'bg-white'} dark:bg-gray-800 dark:ring-white/20 dark:last:border-0 sm:text-sm -translate-x-1/4" role="menu" aria-orientation="vertical" aria-labelledby="${title.toLowerCase()}-selector-button" tabindex="-1">
+<ul id="${title.toLowerCase()}-list-dropdown" style="max-height:400px;overflow-y:auto;width:250px;pointer-events:auto;" class="hidden transition-all absolute z-10 ${side === 'right' ? 'right-0' : 'left-0'} mt-1 overflow-auto rounded-md py-1 text-base ring-1 ring-opacity-5 focus:outline-none ${forceDark ? 'bg-gray-800 ring-white/20 last:border-0' : 'bg-white'} dark:bg-gray-800 dark:ring-white/20 dark:last:border-0 sm:text-sm -translate-x-1/4" role="menu" aria-orientation="vertical" aria-labelledby="${title.toLowerCase()}-selector-button" tabindex="-1">
   ${options.map((option) => `<li title="${option.description || ''}" class="text-gray-900 relative cursor-pointer select-none border-b py-1 pl-3 pr-9 last:border-0 ${forceDark ? 'border-white/20' : 'border-gray-100'} dark:border-white/20 hover:bg-gray-600" id="${title.toLowerCase()}-selector-option-${option.code}" role="option" tabindex="-1">
     <div class="flex flex-col">
       <span class="font-semibold flex h-6 items-center gap-1 truncate ${forceDark ? 'text-gray-100' : 'text-gray-800'} dark:text-gray-100">${option.name}</span>
