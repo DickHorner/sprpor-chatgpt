@@ -253,6 +253,12 @@ input:checked + .slider:before {
 .markdown a:hover {
   text-decoration: underline !important;
 }
+/* Fix light mode text color for readability */
+html:not(.dark) .text-token-text-primary,
+html:not(.dark) .text-text-primary,
+html:not(.dark) [class*="text-"] {
+  color: #000 !important;
+}
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

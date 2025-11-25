@@ -53,28 +53,6 @@ function releaseNoteModalActions() {
 }
 // eslint-disable-next-line no-unused-vars
 function initializeReleaseNote() {
-  setTimeout(() => {
-    // get current app version
-    const { version } = chrome.runtime.getManifest();
-    // get lastSeenReleaseNoteVersion from storage
-    chrome.storage.sync.get(['lastSeenReleaseNoteVersion'], (result) => {
-      const { lastSeenReleaseNoteVersion } = result;
-      // if lastSeenReleaseNoteVersion is not equal to current app version
-      if (lastSeenReleaseNoteVersion !== version) {
-        // create releaseNote modal
-        createReleaseNoteModal(version);
-        // update lastSeenReleaseNoteVersion in storage
-        chrome.storage.sync.set({ lastSeenReleaseNoteVersion: version }, () => {
-          // const previousVersion = document.getElementById('previous-version');
-          // if (previousVersion) {
-          //   previousVersion.addEventListener('click', () => {
-          //     // cose current modal
-          //     document.querySelector(`button[id="modal-close-button-release-note-(v-${version})"]`).click();
-          //     createReleaseNoteModal(previousVersion.dataset.version);
-          //   });
-          // }
-        });
-      }
-    });
-  }, 3000);
+  // Release note splash screen disabled
+  return;
 }

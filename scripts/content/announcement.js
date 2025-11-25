@@ -87,42 +87,6 @@ function announcementModalActions(data) {
 }
 // eslint-disable-next-line no-unused-vars
 function initializeAnnouncement() {
-  setTimeout(() => {
-    chrome.storage.sync.get(['lastSeenAnnouncementId', 'lastSeenNewsletterId', 'email'], (result) => {
-      chrome.storage.local.get(['settings'], (res) => {
-        const { lastSeenAnnouncementId, lastSeenNewsletterId, email } = result;
-        // try getting latest announcement first
-        chrome.runtime.sendMessage({
-          getLatestAnnouncement: true,
-        }, (announcement) => {
-          if (announcement && announcement.id && lastSeenAnnouncementId !== announcement.id) {
-            createAnnouncementModal(announcement);
-            chrome.storage.sync.set({ lastSeenAnnouncementId: announcement.id });
-          } else {
-            // if no announcement was found, try getting the latest newsletter
-            if (res.settings?.hideNewsletter) return;
-            chrome.runtime.sendMessage({
-              getLatestNewsletter: true,
-            }, (newsletter) => {
-              if (!newsletter || !newsletter.id) return;
-              if (lastSeenNewsletterId !== newsletter.id) {
-                createAnnouncementModal(newsletter, email);
-                chrome.storage.sync.set({ lastSeenNewsletterId: newsletter.id });
-                chrome.storage.local.get(['readNewsletterIds'], (results) => {
-                  const readNewsletterIds = results.readNewsletterIds || [];
-                  chrome.storage.local.set({ readNewsletterIds: [...readNewsletterIds, newsletter.id] });
-                });
-                chrome.runtime.sendMessage({
-                  incrementOpenRate: true,
-                  detail: {
-                    newsletterId: newsletter.id,
-                  },
-                });
-              }
-            });
-          }
-        });
-      });
-    });
-  }, 7000);
+  // Announcement splash screen disabled
+  return;
 }
